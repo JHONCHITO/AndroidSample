@@ -1,36 +1,37 @@
-package com.example.androidsample
+package com.example.finalgrades
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
+import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
-
-    private lateinit var etDolares: EditText
-    private lateinit var tvResultado: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        etDolares = findViewById(R.id.etDolares)
-        tvResultado = findViewById(R.id.tvResultado)
-    }
+        val nota1 = findViewById<EditText>(R.id.nota1)
+        val nota2 = findViewById<EditText>(R.id.nota2)
+        val nota3 = findViewById<EditText>(R.id.nota3)
+        val btnCalcular = findViewById<Button>(R.id.btnCalcular)
+        val txtResultado = findViewById<TextView>(R.id.txtResultado)
 
-    // Este método lo llama el botón por android:onClick="convertCurrency"
-    fun convertCurrency(view: View) {
-        val texto = etDolares.text.toString().trim()
-        val dolares = texto.toFloatOrNull()
+        btnCalcular.setOnClickListener {
+            val n1 = nota1.text.toString().toDoubleOrNull() ?: 0.0
+            val n2 = nota2.text.toString().toDoubleOrNull() ?: 0.0
+            val n3 = nota3.text.toString().toDoubleOrNull() ?: 0.0
 
-        if (dolares == null) {
-            tvResultado.text = getString(R.string.sin_valor)
-            return
+            val promedio = (n1 + n2 + n3) / 3
+
+            val mensaje = if (promedio >= 3.0) {
+                "Promedio: %.2f ✅ Aprobado".format(promedio)
+            } else {
+                "Promedio: %.2f ❌ Reprobado".format(promedio)
+            }
+
+            txtResultado.text = mensaje
         }
-
-        val tasa = 0.85f
-        val valorEuro = dolares * tasa
-        tvResultado.text = valorEuro.toString()
     }
 }
